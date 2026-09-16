@@ -9,7 +9,7 @@ and `xauth` (`sudo apt install xauth` if missing). Your user must be able to run
 From your desktop terminal:
 
 ```bash
-cd /home/b6/Works/CenterDisplay
+cd pathtofolder/CenterDisplay
 bash run-docker.sh
 ```
 
