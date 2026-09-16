@@ -1,0 +1,18 @@
+# Standalone configuration: run through run-windows.cmd or run-windows.sh.
+services:
+  centerdisplay:
+    build: .
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    environment:
+      DISPLAY: "${DISPLAY:-:0}"
+      QT_QPA_PLATFORM: xcb
+      QT_QUICK_BACKEND: software
+    volumes:
+      - type: bind
+        source: /mnt/wslg/.X11-unix
+        target: /tmp/.X11-unix
+        read_only: true
+        bind:
+          create_host_path: false
+    init: true
+    restart: "no"

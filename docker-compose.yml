@@ -1,0 +1,21 @@
+services:
+  centerdisplay:
+    build: .
+    container_name: centerdisplay
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    environment:
+      DISPLAY: "${DISPLAY:?Run from a graphical desktop session}"
+      XAUTHORITY: /tmp/centerdisplay.xauth
+      QT_QPA_PLATFORM: xcb
+      QT_QUICK_BACKEND: software
+    network_mode: host
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+      - type: bind
+        source: ${CENTERDISPLAY_XAUTHORITY:?Use bash run-docker.sh}
+        target: /tmp/centerdisplay.xauth
+        read_only: true
+        bind:
+          create_host_path: false
+    init: true
+    restart: "no"

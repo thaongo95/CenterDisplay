@@ -1,18 +1,27 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <qqml.h>
+#include <QUrl>
 #include <gst/gst.h>
 #include "VideoItem.h"
 #include "GstVideoReceiver.h"
 #include <QImage>
 #include <QMetaType>
+#include <cstdlib>
+#include <QDir>
 
 int main(int argc, char *argv[])
 {
-    gst_init(&argc, &argv);
-
     QGuiApplication app(argc, argv);
+#ifdef Q_OS_WIN
+    // The portable Windows package keeps GStreamer beside the executable.
+    const QDir appDir(QCoreApplication::applicationDirPath());
+    qputenv("GST_PLUGIN_SYSTEM_PATH_1_0",
+            QDir::toNativeSeparators(appDir.filePath("gstreamer-1.0")).toUtf8());
+    qputenv("GST_PLUGIN_SCANNER_1_0",
+            QDir::toNativeSeparators(appDir.filePath("gst-plugin-scanner.exe")).toUtf8());
+#endif
+    gst_init(&argc, &argv);
     qRegisterMetaType<QImage>("QImage");
 
 
@@ -20,7 +29,7 @@ int main(int argc, char *argv[])
         "Video",
         1, 0,
         "VideoItem");
-    GstVideoReceiver receiver1, receiver2, receiver3, receiver4;
+    GstVideoReceiver receiver1, receiver2, receiver3, receiver4, receiver5, receiver6;
     QQmlApplicationEngine engine;
 
     engine.rootContext()->setContextProperty(
@@ -35,9 +44,16 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty(
         "receiver4",
         &receiver4);
-    engine.loadFromModule(
-        "centerDisplay",
-        "Main");
+    engine.rootContext()->setContextProperty(
+        "receiver5",
+        &receiver5);
+    engine.rootContext()->setContextProperty(
+        "receiver6",
+        &receiver6);
+    engine.load(QUrl(QStringLiteral("qrc:/centerDisplay/Main.qml")));
+
+    if (engine.rootObjects().isEmpty())
+        return EXIT_FAILURE;
 
     return app.exec();
 }
