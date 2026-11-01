@@ -26,7 +26,7 @@ void VideoItem::setFrame(const QImage &image)
 {
     {
         QMutexLocker locker(&m_mutex);
-        m_image = image.copy();
+        m_image = image; // QImage shares the owned frame safely until replaced.
     }
 
     update();

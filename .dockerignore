@@ -3,3 +3,6 @@
 build*
 importedcontent
 *.user
+
+# Saved camera URLs stay on the host.
+config/

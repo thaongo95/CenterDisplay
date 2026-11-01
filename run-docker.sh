@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+mkdir -p config
 : "${DISPLAY:?Run this script from your Ubuntu desktop terminal}"
 command -v xauth >/dev/null || { echo 'Install xauth: sudo apt install xauth' >&2; exit 1; }
 export HOST_UID="$(id -u)" HOST_GID="$(id -g)"

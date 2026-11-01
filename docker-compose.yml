@@ -8,8 +8,14 @@ services:
       XAUTHORITY: /tmp/centerdisplay.xauth
       QT_QPA_PLATFORM: xcb
       QT_QUICK_BACKEND: software
+      XDG_CONFIG_HOME: /config
     network_mode: host
     volumes:
+      - type: bind
+        source: ./config
+        target: /config
+        bind:
+          create_host_path: false
       - /tmp/.X11-unix:/tmp/.X11-unix:ro
       - type: bind
         source: ${CENTERDISPLAY_XAUTHORITY:?Use bash run-docker.sh}
