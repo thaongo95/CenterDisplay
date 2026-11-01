@@ -7,12 +7,20 @@ services:
       DISPLAY: "${DISPLAY:-:0}"
       QT_QPA_PLATFORM: xcb
       QT_QUICK_BACKEND: software
+      XDG_CONFIG_HOME: /config
     volumes:
+      - type: bind
+        source: ./config
+        target: /config
+        bind:
+          create_host_path: false
       - type: bind
         source: /mnt/wslg/.X11-unix
         target: /tmp/.X11-unix
         read_only: true
         bind:
           create_host_path: false
+    ports:
+      - "14550-14555:14550-14555/udp"
     init: true
     restart: "no"

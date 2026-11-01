@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+mkdir -p config
 if [[ ! -S /mnt/wslg/.X11-unix/X0 ]]; then
     echo 'WSLg display is missing. Run wsl --update in PowerShell, then wsl --shutdown and retry.' >&2
     exit 1

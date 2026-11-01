@@ -102,3 +102,6 @@ Thumbs.db
 *.bak
 *.swp
 *~
+
+# Saved camera URLs stay on the host.
+config/
